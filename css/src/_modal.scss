@@ -1,0 +1,233 @@
+/**
+* Gravity Department - Modal
+* https://github.com/gravitydepartment/modal
+*
+* @author     Brendan Falkowski
+* @copyright  2018 Gravity Department. All rights reserved.
+*/
+
+
+// ==============================================
+// Vars
+// ==============================================
+
+$modal-close-size: 28px !default;
+
+$z-modal-backdrop: 500 !default;
+$z-modal-dialog:   501 !default;
+
+
+// ==============================================
+// Modal
+// ==============================================
+
+.modal {
+    visibility: hidden;
+    position: absolute;
+    z-index: $z-modal-dialog;
+    top: -100px;
+    right: 15px;
+    left: 15px;
+    border-radius: $radius-base;
+    background: #FFF;
+    box-shadow: 0 5px 15px 5px black(0.2);
+    opacity: 0;
+    transition:
+        opacity 250ms linear 0s,
+        top 500ms ease-out 0s,
+        visibility 0s linear 500ms;
+
+    &.modal-active {
+        visibility: visible;
+        opacity: 1;
+        transition-delay: 0s;
+    }
+
+    &.modal-inactive {
+        overflow: hidden;
+        height: 0;
+    }
+}
+
+// ----------------------------------------------
+
+@media (min-width: 600px) {
+
+    .modal {
+        right: 25px;
+        left: 25px;
+    }
+
+}
+
+// ----------------------------------------------
+
+@media (min-width: 800px) {
+    .modal {
+        right: 5%;
+        left: 5%;
+    }
+}
+
+// ----------------------------------------------
+// Modifier: Small
+
+@media (min-width: 320px) {
+
+    .modal--small {
+        right: auto;
+        left: 50%;
+        width: 290px;
+        margin-left: (290px / -2);
+    }
+
+}
+
+// ----------------------------------------------
+// Modifier: Medium
+
+@media (min-width: 550px) {
+
+    .modal--medium {
+        right: auto;
+        left: 50%;
+        width: 520px;
+        margin-left: (520px / -2);
+    }
+
+}
+
+// ----------------------------------------------
+// Modifier: Large
+
+@media (min-width: 800px) {
+
+    .modal--large {
+        right: auto;
+        left: 50%;
+        width: 750px;
+        margin-left: (750px / -2);
+    }
+
+}
+
+
+// ==============================================
+// Modal - Header
+// ==============================================
+
+.modal_header {
+    position: relative;
+    padding: 10px (10px + $modal-close-size + 10px) 10px 15px;
+    border-bottom: 1px solid $c-border;
+    border-radius: $radius-base $radius-base 0 0;
+}
+
+.modal_header h1,
+.modal_header h2,
+.modal_header h3,
+.modal_header h4,
+.modal_header h5, {
+    @include h2;
+    margin: 0;
+    line-height: 30px;
+}
+
+
+// ==============================================
+// Modal - Subtitle
+// ==============================================
+
+.modal_subtitle {
+    margin-bottom: 0;
+    font-size: $font-size-s;
+}
+
+// ==============================================
+// Modal - Body
+// ==============================================
+
+.modal_body {
+    position: relative;
+    padding: 20px 15px;
+}
+
+// Element scrolling is not reliable across devices.
+/*
+.modal_body.scroll {
+    overflow-y: auto;
+    max-height: 400px;
+}
+*/
+
+.modal_body > *:last-child {
+    margin-bottom: 0;
+}
+
+
+// ==============================================
+// Modal - Footer
+// ==============================================
+
+.modal_footer {
+    padding: 15px;
+    border-top: 1px solid $c-border;
+}
+
+
+// ==============================================
+// Modal - Close
+// ==============================================
+
+.modal_close {
+    @include image-replacement;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: $modal-close-size;
+    height: $modal-close-size;
+    border-radius: ($modal-close-size / 2);
+    background: $c-action-secondary-base;
+
+    &:hover {
+        background: $c-action-primary-hover;
+    }
+
+    &::before {
+        @include svg (cross-12-white);
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 12px;
+        height: 12px;
+        margin-top: (12px / -2);
+        margin-left: (12px / -2);
+    }
+}
+
+
+// ==============================================
+// Modal Backdrop
+// ==============================================
+
+.modal-backdrop {
+    visibility: hidden;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $z-modal-backdrop;
+    background: #000;
+    opacity: 0;
+    transition:
+        opacity 300ms linear 0s,
+        visibility 0s linear 300ms;
+}
+
+.modal-backdrop.modal-active {
+    visibility: visible;
+    opacity: 0.65;
+    transition-delay: 0s;
+}
