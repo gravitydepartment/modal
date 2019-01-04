@@ -153,33 +153,6 @@ Modal.prototype = {
         var scrollOffset       = jQuery(document).scrollTop();
         var initialTopPosition = scrollOffset - 100;
 
-        // ----------------------------------------------
-        // Close an active modal without closing the backdrop
-        //
-        // [todo]
-        // Need to fire close events on modal being swapped out.
-        // Ideally, split up "modal open/close" and "backdrop open/close" methods.
-
-        var $activeModal = jQuery('.modal.modal-active');
-
-        if ($activeModal.length) {
-            $activeModal.each(function () {
-                var $swapModal = jQuery(this);
-
-                $swapModal.removeClass('modal-active');
-
-                window.setTimeout(function() {
-                    $swapModal.addClass('modal-inactive');
-                }, _this.config.transitionEndTime);
-
-                // Remove inline "top" style so modal animates to starting position.
-                $swapModal.css('top', '');
-            });
-        }
-
-        // ----------------------------------------------
-        // Show modal
-
         // Set initial position
         this.$dialog.css('top', initialTopPosition + 'px');
 
