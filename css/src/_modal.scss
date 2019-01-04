@@ -11,17 +11,29 @@
 // Vars
 // ==============================================
 
-$modal-close-size: 28px !default;
+$modal-close-button-size: 28px !default;
+$modal-close-icon-size:   24px !default;
 
-$z-modal-backdrop: 500 !default;
-$z-modal-dialog:   501 !default;
+$modal-dialog-width-s:    400px !default;
+$modal-dialog-width-base: 600px !default;
+$modal-dialog-width-l:    800px !default;
+
+$z-modal-backdrop: 900 !default;
+$z-modal-dialog:   901 !default;
 
 
 // ==============================================
 // Modal
 // ==============================================
 
-.modal {
+//.modal {}
+
+
+// ==============================================
+// Modal - Dialog
+// ==============================================
+
+.modal_dialog {
     visibility: hidden;
     position: absolute;
     z-index: $z-modal-dialog;
@@ -33,14 +45,14 @@ $z-modal-dialog:   501 !default;
     box-shadow: 0 5px 15px 5px black(0.2);
     opacity: 0;
     transition:
-        opacity 250ms linear 0s,
-        top 500ms ease-out 0s,
-        visibility 0s linear 500ms;
+        opacity 250ms linear 0ms,
+        top 500ms ease-out 0ms,
+        visibility 0ms linear 500ms;
 
     &.modal-active {
         visibility: visible;
         opacity: 1;
-        transition-delay: 0s;
+        transition-delay: 0ms;
     }
 
     &.modal-inactive {
@@ -53,7 +65,7 @@ $z-modal-dialog:   501 !default;
 
 @media (min-width: 600px) {
 
-    .modal {
+    .modal_dialog {
         right: 25px;
         left: 25px;
     }
@@ -63,7 +75,7 @@ $z-modal-dialog:   501 !default;
 // ----------------------------------------------
 
 @media (min-width: 800px) {
-    .modal {
+    .modal_dialog {
         right: 5%;
         left: 5%;
     }
@@ -74,11 +86,11 @@ $z-modal-dialog:   501 !default;
 
 @media (min-width: 320px) {
 
-    .modal--small {
+    .modal_dialog--s {
         right: auto;
         left: 50%;
-        width: 290px;
-        margin-left: (290px / -2);
+        width: $modal-dialog-width-s;
+        margin-left: ($modal-dialog-width-s / -2);
     }
 
 }
@@ -88,11 +100,11 @@ $z-modal-dialog:   501 !default;
 
 @media (min-width: 550px) {
 
-    .modal--medium {
+    .modal_dialog--base {
         right: auto;
         left: 50%;
-        width: 520px;
-        margin-left: (520px / -2);
+        width: $modal-dialog-width-base;
+        margin-left: ($modal-dialog-width-base / -2);
     }
 
 }
@@ -102,11 +114,11 @@ $z-modal-dialog:   501 !default;
 
 @media (min-width: 800px) {
 
-    .modal--large {
+    .modal_dialog--l {
         right: auto;
         left: 50%;
-        width: 750px;
-        margin-left: (750px / -2);
+        width: $modal-dialog-width-l;
+        margin-left: ($modal-dialog-width-l / -2);
     }
 
 }
@@ -118,7 +130,7 @@ $z-modal-dialog:   501 !default;
 
 .modal_header {
     position: relative;
-    padding: 10px (10px + $modal-close-size + 10px) 10px 15px;
+    padding: 10px (10px + $modal-close-button-size + $space-base) 10px $space-base;
     border-bottom: 1px solid $c-border;
     border-radius: $radius-base $radius-base 0 0;
 }
@@ -128,9 +140,11 @@ $z-modal-dialog:   501 !default;
 .modal_header h3,
 .modal_header h4,
 .modal_header h5, {
-    @include h2;
     margin: 0;
-    line-height: 30px;
+    font-size: $font-size-xxl;
+    font-style: normal;
+    font-weight: bold;
+    line-height: $line-height-s;
 }
 
 
@@ -138,10 +152,8 @@ $z-modal-dialog:   501 !default;
 // Modal - Subtitle
 // ==============================================
 
-.modal_subtitle {
-    margin-bottom: 0;
-    font-size: $font-size-s;
-}
+//.modal_subtitle {}
+
 
 // ==============================================
 // Modal - Body
@@ -149,12 +161,12 @@ $z-modal-dialog:   501 !default;
 
 .modal_body {
     position: relative;
-    padding: 20px 15px;
+    padding: $space-l $space-base;
 }
 
 // Element scrolling is not reliable across devices.
 /*
-.modal_body.scroll {
+.modal_body--scroll {
     overflow-y: auto;
     max-height: 400px;
 }
@@ -170,7 +182,7 @@ $z-modal-dialog:   501 !default;
 // ==============================================
 
 .modal_footer {
-    padding: 15px;
+    padding: $space-base;
     border-top: 1px solid $c-border;
 }
 
@@ -183,10 +195,11 @@ $z-modal-dialog:   501 !default;
     @include image-replacement;
     position: absolute;
     top: 10px;
-    right: 10px;
-    width: $modal-close-size;
-    height: $modal-close-size;
-    border-radius: ($modal-close-size / 2);
+    right: $space-base;
+    width: $modal-close-button-size;
+    height: $modal-close-button-size;
+    border: 0;
+    border-radius: ($modal-close-button-size / 2);
     background: $c-action-secondary-base;
 
     &:hover {
@@ -194,15 +207,15 @@ $z-modal-dialog:   501 !default;
     }
 
     &::before {
-        @include svg (cross-12-white);
+        @include svg (remove);
         content: '';
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 12px;
-        height: 12px;
-        margin-top: (12px / -2);
-        margin-left: (12px / -2);
+        width: $modal-close-icon-size;
+        height: $modal-close-icon-size;
+        margin-top: ($modal-close-icon-size / -2);
+        margin-left: ($modal-close-icon-size / -2);
     }
 }
 
@@ -211,7 +224,7 @@ $z-modal-dialog:   501 !default;
 // Modal Backdrop
 // ==============================================
 
-.modal-backdrop {
+.modal_backdrop {
     visibility: hidden;
     position: fixed;
     top: 0;
@@ -222,12 +235,12 @@ $z-modal-dialog:   501 !default;
     background: #000;
     opacity: 0;
     transition:
-        opacity 300ms linear 0s,
-        visibility 0s linear 300ms;
+        opacity 300ms linear 0ms,
+        visibility 0ms linear 300ms;
 }
 
-.modal-backdrop.modal-active {
+.modal_backdrop.modal-active {
     visibility: visible;
     opacity: 0.65;
-    transition-delay: 0s;
+    transition-delay: 0ms;
 }
