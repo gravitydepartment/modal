@@ -48,17 +48,17 @@ $z-modal-dialog:   901 !default;
         opacity 250ms linear 0ms,
         top 500ms ease-out 0ms,
         visibility 0ms linear 500ms;
+}
 
-    &.modal-active {
-        visibility: visible;
-        opacity: 1;
-        transition-delay: 0ms;
-    }
+[data-modal-state='closed'] .modal_dialog {
+    overflow: hidden;
+    height: 0;
+}
 
-    &.modal-inactive {
-        overflow: hidden;
-        height: 0;
-    }
+[data-modal-state='open'] .modal_dialog {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0ms;
 }
 
 // ----------------------------------------------
@@ -239,7 +239,7 @@ $z-modal-dialog:   901 !default;
         visibility 0ms linear 300ms;
 }
 
-.modal_backdrop.modal-active {
+[data-modal-state='open'] .modal_backdrop {
     visibility: visible;
     opacity: 0.65;
     transition-delay: 0ms;

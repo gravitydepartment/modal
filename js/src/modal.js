@@ -90,12 +90,12 @@ Modal.prototype = {
     closeModal: function () {
         var _this = this;
 
-        this.$backdrop.removeClass('modal-active');
-        this.$dialog.removeClass('modal-active');
+        // Animate out
+        this.$modal.attr('data-modal-state', 'closing');
 
-        window.setTimeout(function() {
+        window.setTimeout(function () {
             // De-activate modal
-            _this.$dialog.addClass('modal-inactive');
+            _this.$modal.attr('data-modal-state', 'closed');
 
             // Trigger custom event
             _this.$modal.trigger('close.modal');
@@ -122,8 +122,8 @@ Modal.prototype = {
         }
 
         var template = [
-            '<section class="modal" id="' + id + '" role="dialog">',
-                '<div class="modal_dialog modal-inactive ' + widthClass + '">',
+            '<section class="modal" id="' + id + '" role="dialog" data-modal-state="closed">',
+                '<div class="modal_dialog ' + widthClass + '">',
                     dialogHtml,
                     closeButton.join(''),
                 '</div>',
@@ -183,11 +183,8 @@ Modal.prototype = {
         // Set initial position
         this.$dialog.css('top', initialTopPosition + 'px');
 
-        // Activate the backdrop
-        this.$backdrop.addClass('modal-active');
-
         // Activate the modal
-        this.$dialog.removeClass('modal-inactive').addClass('modal-active');
+        this.$modal.attr('data-modal-state', 'open');
 
         // Delay firing until the transition is done
         window.setTimeout(function () {
