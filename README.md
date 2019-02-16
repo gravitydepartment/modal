@@ -85,23 +85,23 @@ Add event listeners to trigger each modal:
 ```javascript
 var modalTriggers = document.querySelectorAll('[data-modal-trigger]');
 
-modalTriggers.forEach(function (trigger) {
-    trigger.addEventListener('click', function (e) {
+for (var i = 0; i < modalTriggers.length; i++) {
+    modalTriggers[i].addEventListener('click', function (e) {
         e.preventDefault();
 
-        var config = {};
-        var modal  = trigger.getAttribute('data-modal-trigger');
-        var width  = trigger.getAttribute('data-modal-width');
+        var settings = {};
+        var modal    = this.getAttribute('data-modal-trigger');
+        var width    = this.getAttribute('data-modal-width');
 
-        config.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
+        settings.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
 
         if (width) {
-            config.width = width;
+            settings.width = width;
         }
 
-        new Modal(config);
+        new Modal(settings);
     });
-});
+}
 ```
 
 ## Documentation

@@ -71,12 +71,12 @@ Modal.prototype = {
         }
 
         // Click on "close buttons" to close
-        this.$closeButtons.forEach(function (elem) {
-            elem.addEventListener('click', function (e) {
-                e.preventDefault();
-                _this.closeModal();
-            });
-        });
+        for (var i = 0; i < this.$closeButtons.length; i++) {
+          this.$closeButtons[i].addEventListener('click', function (e) {
+              e.preventDefault();
+              _this.closeModal();
+          });
+        }
     },
 
     closeModal: function () {
