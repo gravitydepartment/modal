@@ -15,7 +15,6 @@ function Modal (config) {
         addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
         allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
         allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
-        allowInnerScroll:   false,                 // {boolean} - The "modal_body" will be scrollable.
         class:              '',                    // {string}  - Class on "modal" element.
         closeButtonLabel:   'Close',               // {string}  - Label for the "close" link.
         content:            null,                  // {string}  - String of HTML content to render in the modal.

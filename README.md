@@ -37,9 +37,7 @@ Simple modals with useful options.
 ### Customization
 
 - Pass a `config` object to override any default.
-- Allow scrolling inside the modal's body.
-- Add a custom `id` attribute.
-- Add a custom `class` for styling.
+- Override SCSS vars for styling.
 
 ## Dependencies
 
@@ -140,7 +138,6 @@ var config = {
     addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
     allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
     allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
-    allowInnerScroll:   false,                 // {boolean} - The "modal_body" will be scrollable.
     class:              '',                    // {string}  - Class on "modal" element.
     closeButtonLabel:   '&times;',             // {string}  - "&times;|Close" - Label for the "close" link.
     content:            null,                  // {string}  - String of HTML content to render in the modal.
