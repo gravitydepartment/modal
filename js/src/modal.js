@@ -17,7 +17,7 @@ function Modal (config) {
         allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
         allowInnerScroll:   false,                 // {boolean} - The "modal_body" will be scrollable.
         class:              '',                    // {string}  - Class on "modal" element.
-        closeButtonLabel:   '&times;',             // {string}  - "&times;|Close" - Label for the "close" link.
+        closeButtonLabel:   'Close',               // {string}  - Label for the "close" link.
         content:            null,                  // {string}  - String of HTML content to render in the modal.
         id:                 'modal-' + Date.now(), // {string}  - ID on "modal" element.
         transitionEndTime:  500,                   // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
@@ -100,7 +100,7 @@ Modal.prototype = {
         if (this.config.addCloseButton) {
             // Add close button to markup
             closeButton = [
-                '<button type="button" class="modal_close" data-modal-close="true" aria-label="Close">',
+                '<button type="button" class="modal_close" data-modal-close="true" aria-label="' + this.config.closeButtonLabel + '">',
                     this.config.closeButtonLabel,
                 '</button>'
             ];
