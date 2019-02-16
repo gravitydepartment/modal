@@ -110,14 +110,16 @@ modalTriggers.forEach(function (trigger) {
 
 ```javascript
 var settings = {
-    addCloseButton:     true,      // {boolean} - Add a close link to the modal.
-    allowBackdropClose: true,      // {boolean} - Clicking the backdrop will close the modal.
-    allowEscapeClose:   true,      // {boolean} - Pressing "ESC" will close the modal.
-    allowInnerScroll:   false,     // {boolean} - The "modal_body" will be scrollable.
-    closeButtonLabel:   '&times;', // {string}  - "&times;|Close" - Label for the "close" link.
-    content:            null,      // {string}  - String of HTML content to render in the modal.
-    transitionEndTime:  500,       // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
-    width:              'base'     // {string}  - "base|fluid|s|l" - Max width of the modal.
+    addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
+    allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
+    allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
+    allowInnerScroll:   false,                 // {boolean} - The "modal_body" will be scrollable.
+    class:              '',                    // {string}  - Class on "modal" element.
+    closeButtonLabel:   '&times;',             // {string}  - "&times;|Close" - Label for the "close" link.
+    content:            null,                  // {string}  - String of HTML content to render in the modal.
+    id:                 'modal-' + Date.now(), // {string}  - ID on "modal" element.
+    transitionEndTime:  500,                   // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
+    width:              'base'                 // {string}  - "base|fluid|s|l" - Max width of the modal.
 }
 ```
 

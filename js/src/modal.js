@@ -12,14 +12,16 @@
  */
 function Modal (settings) {
     this.config = {
-        addCloseButton:     true,      // {boolean} - Add a close link to the modal.
-        allowBackdropClose: true,      // {boolean} - Clicking the backdrop will close the modal.
-        allowEscapeClose:   true,      // {boolean} - Pressing "ESC" will close the modal.
-        allowInnerScroll:   false,     // {boolean} - The "modal_body" will be scrollable.
-        closeButtonLabel:   '&times;', // {string}  - "&times;|Close" - Label for the "close" link.
-        content:            null,      // {string}  - String of HTML content to render in the modal.
-        transitionEndTime:  500,       // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
-        width:              'base'     // {string}  - "base|fluid|s|l" - Max width of the modal.
+        addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
+        allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
+        allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
+        allowInnerScroll:   false,                 // {boolean} - The "modal_body" will be scrollable.
+        class:              '',                    // {string}  - Class on "modal" element.
+        closeButtonLabel:   '&times;',             // {string}  - "&times;|Close" - Label for the "close" link.
+        content:            null,                  // {string}  - String of HTML content to render in the modal.
+        id:                 'modal-' + Date.now(), // {string}  - ID on "modal" element.
+        transitionEndTime:  500,                   // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
+        width:              'base'                 // {string}  - "base|fluid|s|l" - Max width of the modal.
     };
 
     // Extend defaults
@@ -110,7 +112,6 @@ Modal.prototype = {
     createModal: function () {
         var closeButton = [];
         var dialogHtml  = this.config.content;
-        var id          = 'modal-' + Date.now();
         var widthClass  = 'modal_dialog--' + this.config.width;
 
         if (this.config.addCloseButton) {
@@ -123,7 +124,7 @@ Modal.prototype = {
         }
 
         var template = [
-            '<section class="modal" id="' + id + '" role="dialog" data-modal-state="closed">',
+            '<section class="modal ' + this.config.class + '" id="' + this.config.id + '" role="dialog" data-modal-state="closed">',
                 '<div class="modal_dialog ' + widthClass + '">',
                     dialogHtml,
                     closeButton.join(''),
@@ -136,7 +137,7 @@ Modal.prototype = {
         var fragment = document.createRange().createContextualFragment(template.join(''));
         document.body.appendChild(fragment);
 
-        this.$modal        = document.getElementById(id);
+        this.$modal        = document.getElementById(this.config.id);
         this.$backdrop     = this.$modal.querySelector('.modal_backdrop');
         this.$closeButtons = this.$modal.querySelectorAll('[data-modal-close="true"]');
         this.$dialog       = this.$modal.querySelector('.modal_dialog');
