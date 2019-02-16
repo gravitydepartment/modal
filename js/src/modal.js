@@ -93,7 +93,6 @@ Modal.prototype = {
 
     createModal: function () {
         var closeButton = [];
-        var dialogHtml  = this.config.content;
         var widthClass  = 'modal_dialog--' + this.config.width;
 
         if (this.config.addCloseButton) {
@@ -108,7 +107,7 @@ Modal.prototype = {
         var template = [
             '<section class="modal ' + this.config.class + '" id="' + this.config.id + '" role="dialog" data-modal-state="closed">',
                 '<div class="modal_dialog ' + widthClass + '">',
-                    dialogHtml,
+                    this.config.content,
                     closeButton.join(''),
                 '</div>',
                 '<div class="modal_backdrop">',

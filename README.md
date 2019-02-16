@@ -114,17 +114,17 @@ for (var i = 0; i < modalTriggers.length; i++) {
     modalTriggers[i].addEventListener('click', function (e) {
         e.preventDefault();
 
-        var settings = {};
-        var modal    = this.getAttribute('data-modal-trigger');
-        var width    = this.getAttribute('data-modal-width');
+        var config = {};
+        var modal  = this.getAttribute('data-modal-trigger');
+        var width  = this.getAttribute('data-modal-width');
 
-        settings.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
+        config.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
 
         if (width) {
-            settings.width = width;
+            config.width = width;
         }
 
-        new Modal(settings);
+        new Modal(config);
     });
 }
 ```
@@ -139,7 +139,7 @@ var config = {
     allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
     allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
     class:              '',                    // {string}  - Class on "modal" element.
-    closeButtonLabel:   '&times;',             // {string}  - "&times;|Close" - Label for the "close" link.
+    closeButtonLabel:   'Close',               // {string}  - Label for the "close" link.
     content:            null,                  // {string}  - String of HTML content to render in the modal.
     id:                 'modal-' + Date.now(), // {string}  - ID on "modal" element.
     transitionEndTime:  500,                   // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
