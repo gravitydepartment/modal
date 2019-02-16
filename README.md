@@ -152,8 +152,7 @@ var config = {
 
 ### Custom events
 
-These events fire on the element assigned to `this.$modal`:
+These events fire on the element assigned to `this.$modal` and bubble up:
 
-- `open.modal`
-- `close.modal`
-- `backdropClose.modal`
+- `modal-opened`
+- `modal-closed`

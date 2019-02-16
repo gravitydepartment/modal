@@ -50,9 +50,6 @@ Modal.prototype = {
         if (this.config.allowBackdropClose) {
             this.$backdrop.addEventListener('click', function (e) {
                 _this.closeModal();
-
-                var event = new CustomEvent('closeBackdrop.modal', {'bubbles': true});
-                _this.$modal.dispatchEvent(event);
             });
         }
 
@@ -88,7 +85,7 @@ Modal.prototype = {
         window.setTimeout(function () {
             _this.setState('closed');
 
-            var event = new CustomEvent('close.modal', {'bubbles': true});
+            var event = new CustomEvent('modal-closed', {'bubbles': true});
             _this.$modal.dispatchEvent(event);
 
             _this.destroyModal();
@@ -141,7 +138,7 @@ Modal.prototype = {
         this.setPosition();
         this.setState('open');
 
-        var event = new CustomEvent('open.modal', {'bubbles': true});
+        var event = new CustomEvent('modal-opened', {'bubbles': true});
         this.$modal.dispatchEvent(event);
     },
 
