@@ -8,9 +8,9 @@
 
 
 /**
- * @param {object} settings - Object to override default config
+ * @param {object} config - Configuration options
  */
-function Modal (settings) {
+function Modal (config) {
     this.config = {
         addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
         allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
@@ -24,28 +24,14 @@ function Modal (settings) {
         width:              'base'                 // {string}  - "base|fluid|s|l" - Max width of the modal.
     };
 
-    // Extend defaults
-    this.config = Object.assign(this.config, settings);
+    // Extend default config
+    this.config = Object.assign(this.config, config);
 
-    // ----------------------------------------------
-    // Custom Events
-
-    /*
-    close.modal
-    closeBackdrop.modal
-    open.modal
-    */
-
-    // ----------------------------------------------
     // Selectors
-
     this.$backdrop     = null;
     this.$closeButtons = null;
     this.$dialog       = null;
     this.$modal        = null;
-
-    // ----------------------------------------------
-    // Init
 
     this.init();
 }

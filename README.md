@@ -89,27 +89,27 @@ modalTriggers.forEach(function (trigger) {
     trigger.addEventListener('click', function (e) {
         e.preventDefault();
 
-        var settings = {};
-        var modal    = trigger.getAttribute('data-modal-trigger');
-        var width    = trigger.getAttribute('data-modal-width');
+        var config = {};
+        var modal  = trigger.getAttribute('data-modal-trigger');
+        var width  = trigger.getAttribute('data-modal-width');
 
-        settings.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
+        config.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
 
         if (width) {
-            settings.width = width;
+            config.width = width;
         }
 
-        new Modal(settings);
+        new Modal(config);
     });
 });
 ```
 
 ## Documentation
 
-### Configuration settings
+### Configuration options
 
 ```javascript
-var settings = {
+var config = {
     addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
     allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
     allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
