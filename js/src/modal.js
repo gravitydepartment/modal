@@ -23,7 +23,7 @@ function Modal (settings) {
     };
 
     // Extend defaults
-    jQuery.extend(this.config, settings);
+    this.config = Object.assign(this.config, settings);
 
     // ----------------------------------------------
     // Custom Events
@@ -60,14 +60,16 @@ Modal.prototype = {
 
         // Click on backdrop to close
         if (this.config.allowBackdropClose) {
-            this.$backdrop.on('click', function (e) {
+            this.$backdrop.addEventListener('click', function (e) {
                 _this.closeModal();
-                _this.$modal.trigger('closeBackdrop.modal');
+
+                var event = new CustomEvent('closeBackdrop.modal');
+                _this.$modal.dispatchEvent(event);
             });
         }
 
         if (this.config.allowEscapeClose) {
-            jQuery(document).on('keydown', function (e) {
+            document.addEventListener('keydown', function (e) {
                 // Press "TAB" trap
                 if (e.keyCode === 9) {
                     // [todo]
@@ -81,9 +83,11 @@ Modal.prototype = {
         }
 
         // Click on "close buttons" to close
-        this.$closeButtons.on('click', function (e) {
-            e.preventDefault();
-            _this.closeModal();
+        this.$closeButtons.forEach(function (elem) {
+            elem.addEventListener('click', function (e) {
+                e.preventDefault();
+                _this.closeModal();
+            });
         });
     },
 
@@ -91,14 +95,14 @@ Modal.prototype = {
         var _this = this;
 
         // Start animating out
-        this.$modal.attr('data-modal-state', 'closing');
+        this.setState('closing');
 
         window.setTimeout(function () {
-            // Close modal
-            _this.$modal.attr('data-modal-state', 'closed');
+            _this.setState('closed');
 
-            // Trigger custom event
-            _this.$modal.trigger('close.modal');
+            var event = new CustomEvent('close.modal');
+            _this.$modal.dispatchEvent(event);
+
             _this.destroyModal();
         }, this.config.transitionEndTime);
     },
@@ -109,8 +113,8 @@ Modal.prototype = {
         var id          = 'modal-' + Date.now();
         var widthClass  = 'modal_dialog--' + this.config.width;
 
-        // Add close button to markup
         if (this.config.addCloseButton) {
+            // Add close button to markup
             closeButton = [
                 '<button type="button" class="modal_close" data-modal-close="true" aria-label="Close">',
                     this.config.closeButtonLabel,
@@ -129,52 +133,56 @@ Modal.prototype = {
             '</section>'
         ];
 
-        this.$modal = jQuery(template.join(''));
+        var fragment = document.createRange().createContextualFragment(template.join(''));
+        document.body.appendChild(fragment);
 
-        this.$backdrop     = this.$modal.find('.modal_backdrop');
-        this.$closeButtons = this.$modal.find('[data-modal-close="true"]');
-        this.$dialog       = this.$modal.find('.modal_dialog');
-
-        // Insert modal before </body>, which forces <body> to be positioning context for modals.
-        jQuery('body').append(this.$modal);
-        //document.body.appendChild(elemDiv);
+        this.$modal        = document.getElementById(id);
+        this.$backdrop     = this.$modal.querySelector('.modal_backdrop');
+        this.$closeButtons = this.$modal.querySelectorAll('[data-modal-close="true"]');
+        this.$dialog       = this.$modal.querySelector('.modal_dialog');
     },
 
     destroyModal: function () {
-        this.$modal.remove();
+        this.$modal.parentNode.removeChild(this.$modal);
     },
 
     openModal: function () {
         var _this = this;
 
         // Open modal
-        this.$modal.attr('data-modal-state', 'opening');
+        this.setState('opening');
         this.setPosition();
-        this.$modal.attr('data-modal-state', 'open');
+        this.setState('open');
 
-        // Trigger custom event
-        _this.$modal.trigger('open.modal');
+        var event = new CustomEvent('open.modal');
+        this.$modal.dispatchEvent(event);
     },
 
     setPosition: function () {
-        var scrollOffset   = jQuery(document).scrollTop();
-        var viewportHeight = jQuery(window).height();
+        var scrollOffset   = window.pageYOffset;
+        var viewportHeight = window.innerHeight;
 
         // When the modal has "visibility: visible" its height can be calculated.
-        var modalHeight = this.$dialog.height();
+        var modalHeight = this.$dialog.offsetHeight;
 
         // ----------------------------------------------
         // Set the vertical position
 
-        // Modal is taller than the viewport.
         if (modalHeight >= viewportHeight) {
+            // Modal is taller than the viewport.
             // Show 20px from top (will require page scrolling).
-            this.$dialog.css('top', scrollOffset + 20 + 'px');
-        }
-        // Modal is shorter than the viewport.
-        else {
+            this.$dialog.style.top = scrollOffset + 20 + 'px';
+        } else {
+            // Modal is shorter than the viewport.
             // Show centered vertically within the viewport.
-            this.$dialog.css('top', scrollOffset + (viewportHeight / 2) - (modalHeight / 2) + 'px');
+            this.$dialog.style.top = scrollOffset + (viewportHeight / 2) - (modalHeight / 2) + 'px';
         }
+    },
+
+    /**
+     * @param {string} state - "closed|closing|open|opening"
+     */
+    setState: function (state) {
+        this.$modal.setAttribute('data-modal-state', state);
     }
 };

@@ -16,25 +16,46 @@ Simple modals with useful options.
 
 ## Dependencies
 
-- jQuery 1.10.2
+- None
 
 ## Usage
 
-Include the script in your page:
+Include the script in your page (and polyfills for IE11):
 
 ```html
-<script src="path/to/jquery-1.10.2.js"></script>
-<script src="path/to/modal.js"></script>
+<script defer src="path/to/polyfill-custom-event.js"></script>
+<script defer src="path/to/polyfill-object-assign.js"></script>
+<script defer src="path/to/modal.js"></script>
 ```
 
-Add modal markup to your HTML:
+### Create and open a modal immediately
+
+```javascript
+var content = [
+    '<div class="modal_header">',
+        '<h1>Modal Title</h1>',
+    '</div>',
+    '<div class="modal_body">',
+        '<p>Nulla facilisi. Duis aliquet egestas purus in blandit.</p>',
+    '</div>'
+];
+
+var modal = new Modal({
+    content: content.join(''),
+    width: 's'
+});
+```
+
+### Set up modals to open via an event listener
+
+Add modal triggers and content to your HTML:
 
 ```html
-<button type="button" data-modal="example-modal">
+<button type="button" data-modal-trigger="example-modal">
     Show Modal
 </button>
 
-<section class="modal" id="example-modal">
+<script type="text/template" data-modal="example-modal">
     <div class="modal_header">
         <h1>Modal Title</h1>
     </div>
@@ -56,71 +77,54 @@ Add modal markup to your HTML:
             Close
         </button>
     </div>
-</section>
+</script>
 ```
 
-Initialize all modals within the page:
+Add event listeners to trigger each modal:
 
 ```javascript
-if (jQuery().modal) {
-    var $modalButtons = jQuery('[data-modal]');
+var modalTriggers = document.querySelectorAll('[data-modal-trigger]');
 
-    if ($modalButtons.length) {
-        $modalButtons.modal();
-    }
-}
-```
+modalTriggers.forEach(function (trigger) {
+    trigger.addEventListener('click', function (e) {
+        e.preventDefault();
 
-Or create a modal manually:
+        var settings = {};
+        var modal    = trigger.getAttribute('data-modal-trigger');
+        var width    = trigger.getAttribute('data-modal-width');
 
-```javascript
-var modalContent = [
-    '<div class="modal_header">',
-        '<h1>Modal Title</h1>',
-    '</div>',
-    '<div class="modal_body">',
-        '<p>Nulla facilisi. Duis aliquet egestas purus in blandit.</p>',
-    '</div>'
-];
+        settings.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
 
-jQuery.fn.modal({
-    contentInline: modalContent.join(''),
-    maxWidth: 'medium',
-    showImmediately: true,
-    type: 'inline'
+        if (width) {
+            settings.width = width;
+        }
+
+        new Modal(settings);
+    });
 });
 ```
 
 ## Documentation
 
-### Options
+### Configuration settings
 
 ```javascript
-var options = {
-    addCloseLink:       true,      // {boolean} - Add a close link to the modal.
-    classPrefix:        '',        // {string}  - "namespace-" - Prefix all classes with a namespace. You'll need to modify the CSS if you use this.
-    closeLinkLabel:     '&times;', // {string}  - "&times;|Close" - Label for the "close" link.
-    contentInline:      '',        // {string}  - Content to use instead of a selector.
-    contentAjax:        '',        // {string}  - Content returned by an AJAX request.
-    loadingPlaceholder: '<div class="modal_body">Loading...</div>', // {string}
-    maxWidth:           '',        // {string}  - '' or "small|medium|large" - Max width of the modal.
-    showImmediately:    false,     // {boolean} - Show the modal immediately.
+var settings = {
+    addCloseButton:     true,      // {boolean} - Add a close link to the modal.
+    allowBackdropClose: true,      // {boolean} - Clicking the backdrop will close the modal.
+    allowEscapeClose:   true,      // {boolean} - Pressing "ESC" will close the modal.
+    allowInnerScroll:   false,     // {boolean} - The "modal_body" will be scrollable.
+    closeButtonLabel:   '&times;', // {string}  - "&times;|Close" - Label for the "close" link.
+    content:            null,      // {string}  - String of HTML content to render in the modal.
     transitionEndTime:  500,       // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
-    /**
-     * 'ajax'     - The modal markup is returned by an AJAX response.
-     * 'event'    - The modal markup is returned by the "contentUpdate.modal" event.
-     * 'id'       - The modal markup is already in the DOM with a unique ID.
-     * 'inline'   - The modal markup is passed in as a string.
-     */
-    type: 'id' // {string} - Source for the modal's content.
+    width:              'base'     // {string}  - "base|fluid|s|l" - Max width of the modal.
 }
 ```
 
-### Events
+### Custom events
 
-- open.modal
-- opened.modal
-- close.modal
-- closed.modal
-- backdropClose.modal
-- contentUpdate.modal
+These events fire on the element assigned to `this.$modal`:
+
+- `open.modal`
+- `close.modal`
+- `backdropClose.modal`
