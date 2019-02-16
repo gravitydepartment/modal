@@ -10,9 +10,36 @@ Simple modals with useful options.
 
 ## Features
 
-- Create a modal from in-page HTML
-- Create a modal manually on-the-fly
-- Click the backdrop to close
+### Two ways to use
+
+- Create a modal and open it immediately.
+- Trigger preconfigured modals hidden in the document.
+
+### UI and transitions
+
+- The modal is positioned to best fit the viewport.
+- The modal and backdrop are animated when opening and closing.
+- Replace an open model with a pleasing transition.
+
+### Behaviors
+
+- Click the backdrop to close (can be disabled).
+- Press <kbd>ESC</kbd> to close (can be disabled).
+- Custom events are dispatched when opened and closed.
+- On close, the modal HTML automatically removes itself.
+
+### Accessible
+
+- Uses `<section>` to isolate heading hierarchy.
+- Uses `role="dialog"` attribute.
+- Uses `aria-label` attribute for close buttons.
+
+### Customization
+
+- Pass a `config` object to override any default.
+- Allow scrolling inside the modal's body.
+- Add a custom `id` attribute.
+- Add a custom `class` for styling.
 
 ## Dependencies
 
