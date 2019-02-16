@@ -90,20 +90,17 @@ Modal.prototype = {
     closeModal: function () {
         var _this = this;
 
-        // Animate out
+        // Start animating out
         this.$modal.attr('data-modal-state', 'closing');
 
         window.setTimeout(function () {
-            // De-activate modal
+            // Close modal
             _this.$modal.attr('data-modal-state', 'closed');
 
             // Trigger custom event
             _this.$modal.trigger('close.modal');
             _this.destroyModal();
         }, this.config.transitionEndTime);
-
-        // Remove inline "top" style so modal animates to starting position.
-        this.$dialog.css('top', '');
     },
 
     createModal: function () {
@@ -150,52 +147,34 @@ Modal.prototype = {
     openModal: function () {
         var _this = this;
 
-        var scrollOffset       = jQuery(document).scrollTop();
-        var initialTopPosition = scrollOffset - 100;
-
-        // Set initial position
-        this.$dialog.css('top', initialTopPosition + 'px');
-
-        // Activate the modal
+        // Open modal
+        this.$modal.attr('data-modal-state', 'opening');
+        this.setPosition();
         this.$modal.attr('data-modal-state', 'open');
 
-        // Delay firing until the transition is done
-        window.setTimeout(function () {
-            // Trigger custom event
-            _this.$modal.trigger('open.modal');
-        }, this.config.transitionEndTime);
-
-        // Set final position for transition to reach
-        this.positionModal();
+        // Trigger custom event
+        _this.$modal.trigger('open.modal');
     },
 
-    positionModal: function () {
-        var scrollOffset       = jQuery(document).scrollTop();
-        var initialTopPosition = scrollOffset - 100;
-        var viewportHeight     = jQuery(window).height();
+    setPosition: function () {
+        var scrollOffset   = jQuery(document).scrollTop();
+        var viewportHeight = jQuery(window).height();
 
-        // After "modal-active" class is added, the modal has "height:auto".
-        // Get the natural height.
+        // When the modal has "visibility: visible" its height can be calculated.
         var modalHeight = this.$dialog.height();
 
         // ----------------------------------------------
         // Set the vertical position
 
-        // Modal will overflow the viewport.
-        // Show 20px from top (will require page scrolling).
+        // Modal is taller than the viewport.
         if (modalHeight >= viewportHeight) {
+            // Show 20px from top (will require page scrolling).
             this.$dialog.css('top', scrollOffset + 20 + 'px');
         }
-        // Modal is taller than half the viewport.
-        // Show centered vertically within the viewport.
-        else if (modalHeight > (viewportHeight / 2)) {
-            this.$dialog.css('top', scrollOffset + ((viewportHeight - modalHeight) / 2) + 'px');
-        }
-        // Modal is between half and the full viewport height.
-        // modalHeight <= (viewportHeight / 2)
-        // Show 20% from top.
+        // Modal is shorter than the viewport.
         else {
-            this.$dialog.css('top', scrollOffset + (viewportHeight / 5) + 'px');
+            // Show centered vertically within the viewport.
+            this.$dialog.css('top', scrollOffset + (viewportHeight / 2) - (modalHeight / 2) + 'px');
         }
     }
 };

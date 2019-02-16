@@ -11,12 +11,17 @@
 // Vars
 // ==============================================
 
+$modal-backdrop-opacity:             0.65  !default;
+$modal-backdrop-transition-duration: 300ms !default;
+
 $modal-close-button-size: 28px !default;
 $modal-close-icon-size:   24px !default;
 
-$modal-dialog-width-s:    400px !default;
-$modal-dialog-width-base: 600px !default;
-$modal-dialog-width-l:    800px !default;
+$modal-dialog-transition-duration: 500ms  !default;
+$modal-dialog-translate-y:         -250px !default; // Animate from this offset to final position
+$modal-dialog-width-s:             400px  !default;
+$modal-dialog-width-base:          600px  !default;
+$modal-dialog-width-l:             800px  !default;
 
 $z-modal-backdrop: 900 !default;
 $z-modal-dialog:   901 !default;
@@ -34,31 +39,43 @@ $z-modal-dialog:   901 !default;
 // ==============================================
 
 .modal_dialog {
-    visibility: hidden;
     position: absolute;
     z-index: $z-modal-dialog;
-    top: -100px;
     right: 15px;
     left: 15px;
     border-radius: $radius-base;
     background: #FFF;
     box-shadow: 0 5px 15px 5px black(0.2);
     opacity: 0;
+    transform: translateY($modal-dialog-translate-y);
     transition:
-        opacity 250ms linear 0ms,
-        top 500ms ease-out 0ms,
-        visibility 0ms linear 500ms;
+        opacity ($modal-dialog-transition-duration / 2) linear 0ms,
+        top $modal-dialog-transition-duration ease-out 0ms,
+        transform $modal-dialog-transition-duration ease-out 0ms,
+        visibility 0ms linear $modal-dialog-transition-duration;
 }
 
-[data-modal-state='closed'] .modal_dialog {
-    overflow: hidden;
-    height: 0;
+[data-modal-state='opening'] .modal_dialog {
+    visibility: visible;
 }
 
 [data-modal-state='open'] .modal_dialog {
     visibility: visible;
     opacity: 1;
+    transform: translateY(0);
     transition-delay: 0ms;
+}
+
+[data-modal-state='closing'] .modal_dialog {
+    visibility: visible;
+    transform: translateY($modal-dialog-translate-y);
+    transition-delay: 0ms;
+}
+
+[data-modal-state='closed'] .modal_dialog {
+    visibility: hidden;
+    overflow: hidden;
+    height: 0;
 }
 
 // ----------------------------------------------
@@ -235,12 +252,12 @@ $z-modal-dialog:   901 !default;
     background: #000;
     opacity: 0;
     transition:
-        opacity 300ms linear 0ms,
-        visibility 0ms linear 300ms;
+        opacity $modal-backdrop-transition-duration linear 0ms,
+        visibility 0ms linear $modal-backdrop-transition-duration;
 }
 
 [data-modal-state='open'] .modal_backdrop {
     visibility: visible;
-    opacity: 0.65;
+    opacity: $modal-backdrop-opacity;
     transition-delay: 0ms;
 }
