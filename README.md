@@ -33,6 +33,7 @@ Simple modals with useful options.
 - Uses `<section>` to isolate heading hierarchy.
 - Uses `role="dialog"` attribute.
 - Uses `aria-label` attribute for close buttons.
+- Focus is saved and restored when the modal closes.
 
 ### Customization
 

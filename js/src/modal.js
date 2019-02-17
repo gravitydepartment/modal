@@ -32,11 +32,15 @@ function Modal (config) {
     this.$dialog       = null;
     this.$modal        = null;
 
+    // The element with focus before the modal opened
+    lastFocus = null;
+
     this.init();
 }
 
 Modal.prototype = {
     init: function (element) {
+        this.saveFocus();
         this.createModal();
         this.addEvents();
         this.openModal();
@@ -126,6 +130,7 @@ Modal.prototype = {
 
     destroyModal: function () {
         this.$modal.parentNode.removeChild(this.$modal);
+        this.restoreFocus();
     },
 
     openModal: function () {
@@ -138,6 +143,14 @@ Modal.prototype = {
 
         var event = new CustomEvent('modal-opened', {'bubbles': true});
         this.$modal.dispatchEvent(event);
+    },
+
+    restoreFocus: function () {
+        this.lastFocus.focus();
+    },
+
+    saveFocus: function () {
+        this.lastFocus = document.activeElement;
     },
 
     setPosition: function () {
