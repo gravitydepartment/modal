@@ -181,14 +181,6 @@ $z-modal-dialog:   901 !default;
     padding: $space-l $space-base;
 }
 
-// Element scrolling is not reliable across devices.
-/*
-.modal_body--scroll {
-    overflow-y: auto;
-    max-height: 400px;
-}
-*/
-
 .modal_body > *:last-child {
     margin-bottom: 0;
 }
