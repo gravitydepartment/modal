@@ -10,31 +10,78 @@ Simple modals with useful options.
 
 ## Features
 
-- Create a modal from in-page HTML
-- Create a modal manually on-the-fly
-- Click the backdrop to close
+### Two ways to use
+
+- Create a modal and open it immediately.
+- Trigger preconfigured modals hidden in the document.
+
+### UI and transitions
+
+- The modal is positioned to best fit the viewport.
+- The modal and backdrop are animated when opening and closing.
+- Replace an open model with a pleasing transition.
+
+### Behaviors
+
+- Click the backdrop to close (can be disabled).
+- Press <kbd>ESC</kbd> to close (can be disabled).
+- Custom events are dispatched when opened and closed.
+- On close, the modal HTML automatically removes itself.
+
+### Accessible
+
+- Uses `<section>` to isolate heading hierarchy.
+- Uses `role="dialog"` attribute.
+- Uses `aria-label` attribute for close buttons.
+- Focus is saved and restored when the modal closes.
+
+### Customization
+
+- Pass a `config` object to override any default.
+- Override SCSS vars for styling.
 
 ## Dependencies
 
-- jQuery 1.10.2
+- None
 
 ## Usage
 
-Include the script in your page:
+Include the script in your page (and polyfills for IE11):
 
 ```html
-<script src="path/to/jquery-1.10.2.js"></script>
-<script src="path/to/modal.js"></script>
+<script defer src="path/to/polyfill-custom-event.js"></script>
+<script defer src="path/to/polyfill-object-assign.js"></script>
+<script defer src="path/to/modal.js"></script>
 ```
 
-Add modal markup to your HTML:
+### Create and open a modal immediately
+
+```javascript
+var content = [
+    '<div class="modal_header">',
+        '<h1>Modal Title</h1>',
+    '</div>',
+    '<div class="modal_body">',
+        '<p>Nulla facilisi. Duis aliquet egestas purus in blandit.</p>',
+    '</div>'
+];
+
+var modal = new Modal({
+    content: content.join(''),
+    width: 's'
+});
+```
+
+### Set up modals to open via an event listener
+
+Add modal triggers and content to your HTML:
 
 ```html
-<button type="button" data-modal="example-modal">
+<button type="button" data-modal-trigger="example-modal">
     Show Modal
 </button>
 
-<section class="modal" id="example-modal">
+<script type="text/template" data-modal="example-modal">
     <div class="modal_header">
         <h1>Modal Title</h1>
     </div>
@@ -56,71 +103,54 @@ Add modal markup to your HTML:
             Close
         </button>
     </div>
-</section>
+</script>
 ```
 
-Initialize all modals within the page:
+Add event listeners to trigger each modal:
 
 ```javascript
-if (jQuery().modal) {
-    var $modalButtons = jQuery('[data-modal]');
+var modalTriggers = document.querySelectorAll('[data-modal-trigger]');
 
-    if ($modalButtons.length) {
-        $modalButtons.modal();
-    }
+for (var i = 0; i < modalTriggers.length; i++) {
+    modalTriggers[i].addEventListener('click', function (e) {
+        e.preventDefault();
+
+        var config = {};
+        var modal  = this.getAttribute('data-modal-trigger');
+        var width  = this.getAttribute('data-modal-width');
+
+        config.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
+
+        if (width) {
+            config.width = width;
+        }
+
+        new Modal(config);
+    });
 }
-```
-
-Or create a modal manually:
-
-```javascript
-var modalContent = [
-    '<div class="modal_header">',
-        '<h1>Modal Title</h1>',
-    '</div>',
-    '<div class="modal_body">',
-        '<p>Nulla facilisi. Duis aliquet egestas purus in blandit.</p>',
-    '</div>'
-];
-
-jQuery.fn.modal({
-    contentInline: modalContent.join(''),
-    maxWidth: 'medium',
-    showImmediately: true,
-    type: 'inline'
-});
 ```
 
 ## Documentation
 
-### Options
+### Configuration options
 
 ```javascript
-var options = {
-    addCloseLink:       true,      // {boolean} - Add a close link to the modal.
-    classPrefix:        '',        // {string}  - "namespace-" - Prefix all classes with a namespace. You'll need to modify the CSS if you use this.
-    closeLinkLabel:     '&times;', // {string}  - "&times;|Close" - Label for the "close" link.
-    contentInline:      '',        // {string}  - Content to use instead of a selector.
-    contentAjax:        '',        // {string}  - Content returned by an AJAX request.
-    loadingPlaceholder: '<div class="modal_body">Loading...</div>', // {string}
-    maxWidth:           '',        // {string}  - '' or "small|medium|large" - Max width of the modal.
-    showImmediately:    false,     // {boolean} - Show the modal immediately.
-    transitionEndTime:  500,       // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
-    /**
-     * 'ajax'     - The modal markup is returned by an AJAX response.
-     * 'event'    - The modal markup is returned by the "contentUpdate.modal" event.
-     * 'id'       - The modal markup is already in the DOM with a unique ID.
-     * 'inline'   - The modal markup is passed in as a string.
-     */
-    type: 'id' // {string} - Source for the modal's content.
+var config = {
+    addCloseButton:     true,                  // {boolean} - Add a close link to the modal.
+    allowBackdropClose: true,                  // {boolean} - Clicking the backdrop will close the modal.
+    allowEscapeClose:   true,                  // {boolean} - Pressing "ESC" will close the modal.
+    class:              '',                    // {string}  - Class on "modal" element.
+    closeButtonLabel:   'Close',               // {string}  - Label for the "close" link.
+    content:            null,                  // {string}  - String of HTML content to render in the modal.
+    id:                 'modal-' + Date.now(), // {string}  - ID on "modal" element.
+    transitionEndTime:  500,                   // {number}  - Milliseconds for the modal transition to complete (duration + delay) as set in CSS.
+    width:              'base'                 // {string}  - "base|fluid|s|l" - Max width of the modal.
 }
 ```
 
-### Events
+### Custom events
 
-- open.modal
-- opened.modal
-- close.modal
-- closed.modal
-- backdropClose.modal
-- contentUpdate.modal
+These events fire on the element assigned to `this.$modal` and bubble up:
+
+- `modal-opened`
+- `modal-closed`
