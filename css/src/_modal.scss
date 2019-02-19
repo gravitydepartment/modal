@@ -14,8 +14,9 @@
 $modal-backdrop-opacity:             0.65  !default;
 $modal-backdrop-transition-duration: 300ms !default;
 
-$modal-close-button-size: 28px !default;
-$modal-close-icon-size:   24px !default;
+$modal-close-button-size: 28px    !default;
+$modal-close-icon-size:   24px    !default;
+$modal-close-icon-svg:   'remove' !default;
 
 $modal-dialog-transition-duration: 500ms  !default;
 $modal-dialog-translate-y:         -250px !default; // Animate from this offset to final position
@@ -216,7 +217,7 @@ $z-modal-dialog:   901 !default;
     }
 
     &::before {
-        @include svg (remove);
+        @include svg ($modal-close-icon-svg);
         content: '';
         position: absolute;
         top: 50%;
