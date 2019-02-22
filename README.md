@@ -110,9 +110,9 @@ Add a delegated event listener to trigger each modal:
 
 ```javascript
 document.addEventListener('click', function (e) {
-    e.preventDefault();
-
     if (e.target && e.target.matches('[data-modal-trigger]')) {
+        e.preventDefault();
+
         var config = {};
         var modal  = e.target.getAttribute('data-modal-trigger');
         var width  = e.target.getAttribute('data-modal-width');
