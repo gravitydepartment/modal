@@ -41,6 +41,7 @@ function Modal (config) {
 Modal.prototype = {
     init: function (element) {
         this.saveFocus();
+        this.closeExistingModals();
         this.createModal();
         this.addEvents();
         this.openModal();
@@ -76,6 +77,33 @@ Modal.prototype = {
               e.preventDefault();
               _this.closeModal();
           });
+        }
+    },
+
+    closeExistingModals: function () {
+        // Find modals except those closing or closed, but not yet removed from the DOM.
+        var modals = document.querySelectorAll('.modal:not([data-modal-state="closing"]):not([data-modal-state="closed"])');
+
+        for (var i = 0; i < modals.length; i++) {
+            var modal       = modals[i];
+            var closeButton = modal.querySelector('[data-modal-close]');
+
+            if (closeButton) {
+                // Close gracefully
+                closeButton.click();
+            } else {
+                // Close by force
+                modal.setAttribute('data-modal-state', 'closing');
+
+                window.setTimeout(function () {
+                    modal.setAttribute('data-modal-state', 'closed')
+
+                    var event = new CustomEvent('modal-closed', {'bubbles': true});
+                    modal.dispatchEvent(event);
+
+                    modal.parentNode.removeChild(modal);
+                }, this.config.transitionEndTime);
+            }
         }
     },
 
