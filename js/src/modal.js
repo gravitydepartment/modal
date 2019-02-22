@@ -28,7 +28,7 @@ function Modal (config) {
 
     // Selectors
     this.$backdrop     = null;
-    this.$closeButtons = null;
+    this.$closeTriggers = null;
     this.$dialog       = null;
     this.$modal        = null;
 
@@ -50,13 +50,6 @@ Modal.prototype = {
     addEvents: function () {
         var _this = this;
 
-        // Click on backdrop to close
-        if (this.config.allowBackdropClose) {
-            this.$backdrop.addEventListener('click', function (e) {
-                _this.closeModal();
-            });
-        }
-
         if (this.config.allowEscapeClose) {
             document.addEventListener('keydown', function (e) {
                 // Press "TAB" trap
@@ -71,9 +64,9 @@ Modal.prototype = {
             });
         }
 
-        // Click on "close buttons" to close
-        for (var i = 0; i < this.$closeButtons.length; i++) {
-          this.$closeButtons[i].addEventListener('click', function (e) {
+        // Click on "data-modal-close" elements to close
+        for (var i = 0; i < this.$closeTriggers.length; i++) {
+          this.$closeTriggers[i].addEventListener('click', function (e) {
               e.preventDefault();
               _this.closeModal();
           });
@@ -128,6 +121,7 @@ Modal.prototype = {
     createModal: function () {
         var closeButton = [];
         var widthClass  = 'modal_dialog--' + this.config.width;
+        var backdropCloseAttribute = (this.config.allowBackdropClose) ? 'data-modal-close' : '';
 
         if (this.config.addCloseButton) {
             closeButton = [
@@ -143,7 +137,7 @@ Modal.prototype = {
                     this.config.content,
                     closeButton.join(''),
                 '</div>',
-                '<div class="modal_backdrop">',
+                '<div class="modal_backdrop" ' + backdropCloseAttribute + '>',
                 '</div>',
             '</section>'
         ];
@@ -151,10 +145,10 @@ Modal.prototype = {
         var fragment = document.createRange().createContextualFragment(template.join(''));
         document.body.appendChild(fragment);
 
-        this.$modal        = document.getElementById(this.config.id);
-        this.$backdrop     = this.$modal.querySelector('.modal_backdrop');
-        this.$closeButtons = this.$modal.querySelectorAll('[data-modal-close]');
-        this.$dialog       = this.$modal.querySelector('.modal_dialog');
+        this.$modal         = document.getElementById(this.config.id);
+        this.$backdrop      = this.$modal.querySelector('.modal_backdrop');
+        this.$closeTriggers = this.$modal.querySelectorAll('[data-modal-close]');
+        this.$dialog        = this.$modal.querySelector('.modal_dialog');
     },
 
     destroyModal: function () {
