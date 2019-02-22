@@ -27,10 +27,10 @@ function Modal (config) {
     this.config = Object.assign(this.config, config);
 
     // Selectors
-    this.$backdrop     = null;
+    this.$backdrop      = null;
     this.$closeTriggers = null;
-    this.$dialog       = null;
-    this.$modal        = null;
+    this.$dialog        = null;
+    this.$modal         = null;
 
     // The element with focus before the modal opened
     lastFocus = null;
