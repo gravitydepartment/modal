@@ -106,18 +106,16 @@ Add modal triggers and content to your HTML:
 </script>
 ```
 
-Add event listeners to trigger each modal:
+Add a delegated event listener to trigger each modal:
 
 ```javascript
-var modalTriggers = document.querySelectorAll('[data-modal-trigger]');
+document.addEventListener('click', function (e) {
+    e.preventDefault();
 
-for (var i = 0; i < modalTriggers.length; i++) {
-    modalTriggers[i].addEventListener('click', function (e) {
-        e.preventDefault();
-
+    if (e.target && e.target.matches('[data-modal-trigger]')) {
         var config = {};
-        var modal  = this.getAttribute('data-modal-trigger');
-        var width  = this.getAttribute('data-modal-width');
+        var modal  = e.target.getAttribute('data-modal-trigger');
+        var width  = e.target.getAttribute('data-modal-width');
 
         config.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
 
@@ -126,8 +124,8 @@ for (var i = 0; i < modalTriggers.length; i++) {
         }
 
         new Modal(config);
-    });
-}
+    }
+});
 ```
 
 ## Documentation
