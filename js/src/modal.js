@@ -121,6 +121,8 @@ Modal.prototype = {
 
             _this.destroyModal();
         }, this.config.transitionEndTime);
+
+        this.restoreFocus();
     },
 
     createModal: function () {
@@ -158,7 +160,6 @@ Modal.prototype = {
 
     destroyModal: function () {
         this.$modal.parentNode.removeChild(this.$modal);
-        this.restoreFocus();
     },
 
     openModal: function () {
