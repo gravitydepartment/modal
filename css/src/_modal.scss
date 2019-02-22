@@ -44,6 +44,7 @@ $z-modal-dialog:   901 !default;
     z-index: $z-modal-dialog;
     right: $space-base;
     left: $space-base;
+    margin-bottom: $gap;
     border-radius: $radius-base;
     background: #FFF;
     box-shadow: 0 5px 15px 5px black(0.2);
