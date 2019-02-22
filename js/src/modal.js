@@ -130,9 +130,8 @@ Modal.prototype = {
         var widthClass  = 'modal_dialog--' + this.config.width;
 
         if (this.config.addCloseButton) {
-            // Add close button to markup
             closeButton = [
-                '<button type="button" class="modal_close" data-modal-close="true" aria-label="' + this.config.closeButtonLabel + '">',
+                '<button type="button" class="modal_close" data-modal-close aria-label="' + this.config.closeButtonLabel + '">',
                     this.config.closeButtonLabel,
                 '</button>'
             ];
@@ -154,7 +153,7 @@ Modal.prototype = {
 
         this.$modal        = document.getElementById(this.config.id);
         this.$backdrop     = this.$modal.querySelector('.modal_backdrop');
-        this.$closeButtons = this.$modal.querySelectorAll('[data-modal-close="true"]');
+        this.$closeButtons = this.$modal.querySelectorAll('[data-modal-close]');
         this.$dialog       = this.$modal.querySelector('.modal_dialog');
     },
 

@@ -99,7 +99,7 @@ Add modal triggers and content to your HTML:
             Save
         </button>
 
-        <button type="button" data-modal-close="true">
+        <button type="button" data-modal-close>
             Close
         </button>
     </div>
