@@ -1,8 +1,8 @@
+[![Gravity Department](https://cdn.gravitydept.com/github/repo-header.png)](http://gravitydept.com/)
+
 # GravDept Modal
 
 Simple modals with useful options.
-
-[![Gravity Department](http://gravitydept.com/_themes/gravdept/img/logo-footer.png)](http://gravitydept.com/)
 
 ## Demo
 
