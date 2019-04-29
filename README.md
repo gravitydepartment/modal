@@ -1,4 +1,4 @@
-[![Gravity Department](https://cdn.gravitydept.com/github/repo-header.png)](http://gravitydept.com/)
+[![Gravity Department](https://cdn.gravitydept.com/github/repo-header.png)](https://gravitydept.com/)
 
 # GravDept Modal
 
