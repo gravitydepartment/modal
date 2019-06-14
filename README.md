@@ -50,6 +50,7 @@ Include the script in your page (and polyfills for IE11):
 
 ```html
 <script defer src="path/to/polyfill-custom-event.js"></script>
+<script defer src="path/to/polyfill-element-closest.js"></script>
 <script defer src="path/to/polyfill-object-assign.js"></script>
 <script defer src="path/to/modal.js"></script>
 ```
@@ -110,12 +111,13 @@ Add a delegated event listener to trigger each modal:
 
 ```javascript
 document.addEventListener('click', function (e) {
-    if (e.target && e.target.matches('[data-modal-trigger]')) {
+    if (e.target && e.target.closest('[data-modal-trigger]')) {
         e.preventDefault();
 
-        var config = {};
-        var modal  = e.target.getAttribute('data-modal-trigger');
-        var width  = e.target.getAttribute('data-modal-width');
+        var trigger = e.target.closest('[data-modal-trigger]');
+        var config  = {};
+        var modal   = trigger.getAttribute('data-modal-trigger');
+        var width   = trigger.getAttribute('data-modal-width');
 
         config.content = document.querySelector('[data-modal="' + modal + '"]').innerHTML;
 
@@ -127,6 +129,8 @@ document.addEventListener('click', function (e) {
     }
 });
 ```
+
+Note: use `e.target.closest()` because the clickable element may contain child elements. Using `e.target.matches()` won't work in that case.
 
 ## Documentation
 
